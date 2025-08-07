@@ -1,8 +1,10 @@
 # Built application
-build
+dist/
 
 # Built dependencies
 node_modules
 
 # Sensitive data
 .env
+
+model/

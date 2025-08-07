@@ -1,13 +1,19 @@
 import type { I18n } from "@grammyjs/i18n";
 import { type MiddlewareObj, session, Bot as TelegramBot } from "grammy";
 
-import { chatController } from "../../chat/controllers/chat.controller.ts";
-import { upsertChat } from "../../chat/repositories/chat.repository.ts";
-import type { Database } from "../../database/types/database.ts";
-import type { Bot, CustomContext } from "../types/telegram.ts";
-import { createReplyWithTextFunc } from "../utils/context.utils.ts";
+import { chatController } from "../../chat/controllers/chat.controller.js";
+import { upsertChat } from "../../chat/repositories/chat.repository.js";
+import type { Database } from "../../database/types/database.js";
+import { messageEmbeddingsController } from "../../embeddings/controllers/message.controller.js";
+import { testEmbeddingsController } from "../../embeddings/controllers/test.controller.js";
+import type { Bot, Custom, CustomContext } from "../types/telegram.js";
+import { createReplyWithTextFunc } from "../utils/context.utils.js";
 
-function extendContext(bot: Bot, database: Database) {
+function extendContext(
+	bot: Bot,
+	database: Database,
+	embeddings: Custom["embeddings"],
+) {
 	bot.use(async (ctx, next) => {
 		if (!ctx.chat || !ctx.from) {
 			return;
@@ -15,6 +21,7 @@ function extendContext(bot: Bot, database: Database) {
 
 		ctx.text = createReplyWithTextFunc(ctx);
 		ctx.db = database;
+		ctx.embeddings = embeddings;
 
 		const chat = await upsertChat({
 			db: database,
@@ -42,10 +49,16 @@ function setupMiddlewares(bot: Bot, i18n: I18n) {
 
 function setupControllers(bot: Bot) {
 	bot.use(chatController);
+	bot.use(testEmbeddingsController);
+	bot.use(messageEmbeddingsController);
 }
 
-export function createBot(database: Database, i18n: I18n): Bot {
-	const TOKEN = Deno.env.get("TOKEN");
+export function createBot(
+	database: Database,
+	i18n: I18n,
+	embeddings: Custom["embeddings"],
+): Bot {
+	const TOKEN = process.env.TOKEN;
 	if (!TOKEN) {
 		throw new Error("TOKEN environment variable is missing");
 	}
@@ -53,9 +66,11 @@ export function createBot(database: Database, i18n: I18n): Bot {
 	const bot = new TelegramBot<CustomContext>(TOKEN);
 
 	setupPreControllers(bot);
-	extendContext(bot, database);
+	extendContext(bot, database, embeddings);
 	setupMiddlewares(bot, i18n);
 	setupControllers(bot);
+
+	bot.catch(console.error);
 
 	return bot;
 }

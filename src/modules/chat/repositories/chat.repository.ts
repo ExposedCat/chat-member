@@ -1,4 +1,4 @@
-import type { Chat, Database } from "../../database/types/database.ts";
+import type { Chat, Database } from "../../database/types/database.js";
 
 type UpsertChatParams = {
 	db: Database;

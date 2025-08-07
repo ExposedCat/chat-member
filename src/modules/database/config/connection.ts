@@ -1,9 +1,9 @@
 import { MongoClient } from "mongodb";
 
-import type { Chat, Database } from "../types/database.ts";
+import type { Chat, Database } from "../types/database.js";
 
 export async function connectToDb() {
-	const DB_CONNECTION_STRING = Deno.env.get("DB_CONNECTION_STRING");
+	const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
 	if (!DB_CONNECTION_STRING) {
 		throw new Error("DB_CONNECTION_STRING environment variable is missing");
 	}

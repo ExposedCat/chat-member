@@ -1,4 +1,4 @@
-import type { Custom, CustomContext } from "../types/telegram.ts";
+import type { Custom, CustomContext } from "../types/telegram.js";
 
 export function createReplyWithTextFunc(ctx: CustomContext): Custom["text"] {
 	return (resourceKey, templateData, extra = {}) => {

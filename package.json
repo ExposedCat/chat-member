@@ -14,6 +14,7 @@
     "dotenv": "^17.2.1",
     "grammy": "^1.37.0",
     "mongodb": "^6.18.0",
+    "ollama": "^0.5.16",
     "onnxruntime-node": "^1.22.0-rev",
     "tokenizers": "^0.13.3",
     "tokenizers-linux-x64-gnu": "^0.13.4-rc1"

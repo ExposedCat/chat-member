@@ -13,5 +13,4 @@ messageEmbeddingsController.on("message:text", async (ctx) => {
 		id: ctx.message.message_id,
 		chatId: ctx.message.chat.id,
 	});
-	// await ctx.reply("Saved");
 });

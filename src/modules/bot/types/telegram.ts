@@ -8,6 +8,8 @@ import type {
 	SessionFlavor,
 	Bot as TelegramBot,
 } from "grammy";
+import type { Ollama } from "ollama";
+import type { AIEnv } from "../../ai/config/ollama.config.js";
 import type { Chat, Database } from "../../database/types/database.js";
 import type { Embedder } from "../../embeddings/types/embedder.types.js";
 
@@ -27,6 +29,11 @@ export type Custom = {
 	embeddings: {
 		client: QdrantClient;
 		embedder: Embedder;
+	};
+
+	ai: {
+		client: Ollama;
+		env: AIEnv;
 	};
 
 	db: Database;

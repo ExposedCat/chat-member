@@ -1,11 +1,10 @@
 import type { I18n } from "@grammyjs/i18n";
 import { type MiddlewareObj, session, Bot as TelegramBot } from "grammy";
-
-import { chatController } from "../../chat/controllers/chat.controller.js";
+import { aiController } from "../../ai/controllers/ai.controller.js";
 import { upsertChat } from "../../chat/repositories/chat.repository.js";
 import type { Database } from "../../database/types/database.js";
 import { messageEmbeddingsController } from "../../embeddings/controllers/message.controller.js";
-import { testEmbeddingsController } from "../../embeddings/controllers/test.controller.js";
+import { statusController } from "../controllers/status.controller.js";
 import type { Bot, Custom, CustomContext } from "../types/telegram.js";
 import { createReplyWithTextFunc } from "../utils/context.utils.js";
 
@@ -13,6 +12,7 @@ function extendContext(
 	bot: Bot,
 	database: Database,
 	embeddings: Custom["embeddings"],
+	ai: Custom["ai"],
 ) {
 	bot.use(async (ctx, next) => {
 		if (!ctx.chat || !ctx.from) {
@@ -22,6 +22,7 @@ function extendContext(
 		ctx.text = createReplyWithTextFunc(ctx);
 		ctx.db = database;
 		ctx.embeddings = embeddings;
+		ctx.ai = ai;
 
 		const chat = await upsertChat({
 			db: database,
@@ -38,9 +39,7 @@ function extendContext(
 	});
 }
 
-function setupPreControllers(_bot: Bot) {
-	// e.g. inline-mode controllers
-}
+function setupPreControllers(_bot: Bot) {}
 
 function setupMiddlewares(bot: Bot, i18n: I18n) {
 	bot.use(session({ initial: () => ({}) }));
@@ -48,8 +47,8 @@ function setupMiddlewares(bot: Bot, i18n: I18n) {
 }
 
 function setupControllers(bot: Bot) {
-	bot.use(chatController);
-	bot.use(testEmbeddingsController);
+	bot.use(statusController);
+	bot.use(aiController);
 	bot.use(messageEmbeddingsController);
 }
 
@@ -57,6 +56,7 @@ export function createBot(
 	database: Database,
 	i18n: I18n,
 	embeddings: Custom["embeddings"],
+	ai: Custom["ai"],
 ): Bot {
 	const TOKEN = process.env.TOKEN;
 	if (!TOKEN) {
@@ -66,7 +66,7 @@ export function createBot(
 	const bot = new TelegramBot<CustomContext>(TOKEN);
 
 	setupPreControllers(bot);
-	extendContext(bot, database, embeddings);
+	extendContext(bot, database, embeddings, ai);
 	setupMiddlewares(bot, i18n);
 	setupControllers(bot);
 

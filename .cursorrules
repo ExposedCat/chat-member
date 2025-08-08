@@ -1,10 +1,32 @@
 STRICTLY FOLLOW THESE INSTRUCTIONS:
-- Always write production-grade code 
+
+- Always write production-grade code
 - Always use `type` instead of `interface`
 - Always use env for relevant constants
-- Never write any comments
+- Always only write what is needed right now. Keep all your edits as minimal and
+  concise as possible to perform a task. Always start by a small research and
+  implementation plan, proceed only after confirmation
+- Never write any comments, except linter blockers
 - Never create .md files unless explicitly requested to
 - Never bloat README with too many technical details, keep it concise and simple
 - Never create `index.ts` files
-- Never use single-letter variables
+- Never use single-letter variables, instead use only descriptive names. This applies to all variables including lambda arguments
 - Never create relay/empty functions
+
+STRICTLY FOLLOW THIS ARCHITECTURE:
+
+- Entire codebase must be split into corresponding modules
+- Each module can have config, controllers, services, repositories, utils, and
+  types
+- Config: contains all code related to initialization of a module
+- Controllers: listen for input, process it into input data, use services to
+  perform business logic and return results, compile an output from results
+- Services: implement business logic, use repositories to perform raw data
+  operations, use utils to perform auxiliary operations
+- Repositories: provide functions (mainly CRUD, sometimes only part of CRUD) to
+  perform a low-level operations on databases
+- Utils: implement functions that can be helpful for a module
+- Types: implement types for a module when there are too many of them or some
+  needs export
+- src/utils are lightweight utils which can be used for global shared functions
+- For shared utils with heavy business logic, create a new module

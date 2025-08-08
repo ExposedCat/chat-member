@@ -1,8 +1,8 @@
 import type { Message } from "ollama";
 import type { CustomContext } from "../../bot/types/telegram.js";
 import {
+	getSystemPrompt,
 	SEND_MESSAGE_WARNING,
-	SYSTEM_PROMPT,
 	TOOL_RESPONSE_INSTRUCTION,
 	TOOL_RESPONSE_KIND,
 } from "../utils/prompts.js";
@@ -19,7 +19,7 @@ export async function runAgent(
 	const conversation: Message[] = [];
 	conversation.push({
 		role: "system",
-		content: SYSTEM_PROMPT,
+		content: getSystemPrompt(),
 	});
 	conversation.push({
 		role: "user",

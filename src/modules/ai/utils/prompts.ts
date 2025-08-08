@@ -14,11 +14,11 @@ export const SYSTEM_PROMPT = `You are a chat member of a Telegram messenger grou
 # Flow
 - You can think and speak freely how ever you need to, nobody will see this. Take your time to process general dialog state, what is going on, what is user's intent, what do you need to do, how you need to behave, etc.
 - Depending on your decision, you can use some tools, send_message to the chat, or do nothing.
-- Regardless of your decision, you must call 'finish' tool with no arguments when you are done.
+- Regardless of your decision, you must call 'finish' tool when you are done.
 `;
 
 export const SEND_MESSAGE_WARNING =
-	"Note: User will not see this. Use other tools you need, send_message to user or call finish if you are done.";
+	"Note: your last message was not sent to the user. If you meant to send your message to user, use send_message tool. Otherwise use other tools you need or call finish if you are done.";
 
 export const TOOL_RESPONSE_KIND = "tool_response";
 export const TOOL_RESPONSE_INSTRUCTION =

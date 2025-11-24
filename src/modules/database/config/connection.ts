@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-import type { Chat, Database } from "../types/database.js";
+import type { Chat, Database, Thread } from "../types/database.js";
 
 export async function connectToDb() {
 	const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
@@ -13,7 +13,8 @@ export async function connectToDb() {
 
 	const mongoDb = client.db();
 	const chat = mongoDb.collection<Chat>("chat");
-	const database: Database = { chat };
+	const thread = mongoDb.collection<Thread>("thread");
+	const database: Database = { chat, thread };
 
 	return database;
 }

@@ -2,7 +2,7 @@ import type { Tool } from "ollama";
 import type { CustomContext } from "../../bot/types/telegram.js";
 import { searchMessages } from "../../embeddings/services/chat.service.js";
 
-export type ToolName = "send_message" | "search_messages" | "finish";
+export type ToolName = "send_message" | "search_messages";
 
 export type ToolDefinition = {
 	name: ToolName;
@@ -19,9 +19,15 @@ async function executeSendMessage(
 	context: CustomContext,
 	input: { text: string },
 ) {
-	const text = String(input.text ?? "");
-	await context.reply(text);
-	return null;
+	const text = String(input.text ?? "<empty>");
+	const sent = await context.reply(text);
+	return {
+		id: sent.message_id,
+		message: {
+			role: "assistant",
+			content: JSON.stringify({ kind: "message", content: text }),
+		},
+	};
 }
 
 async function executeSearchMessages(
@@ -44,18 +50,11 @@ async function executeSearchMessages(
 	return results;
 }
 
-async function executeFinish(
-	_context: CustomContext,
-	_input: Record<string, never>,
-) {
-	return null;
-}
-
 const toolDefinitions: ToolDefinition[] = [
 	{
 		name: "send_message",
 		description:
-			"Reply to the user with a text message. This is the main way to communicate and provide response to the user.",
+			"Send a text message. This is the main way to communicate and provide response to the user.",
 		parameters: {
 			type: "object",
 			properties: {
@@ -78,13 +77,6 @@ const toolDefinitions: ToolDefinition[] = [
 			required: ["query"],
 		},
 		execute: executeSearchMessages,
-	},
-	{
-		name: "finish",
-		description:
-			"Finish interaction. Always call this after you finished your response.",
-		parameters: {},
-		execute: executeFinish,
 	},
 ];
 

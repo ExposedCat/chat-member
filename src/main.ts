@@ -1,4 +1,4 @@
-import { startApp } from "./modules/app/services/app.service.js";
+import { startApp } from "./app/app.js";
 
 console.debug("Starting app...");
 await startApp();

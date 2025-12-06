@@ -1,28 +1,28 @@
 {
-  "type": "module",
-  "name": "telegram-bot",
-  "version": "1.0.0",
-  "main": "dist/main.js",
-  "scripts": {
-    "build": "tsc",
-    "postbuild": "cp -r src/locales dist/",
-    "start": "npm run build && node ."
-  },
-  "dependencies": {
-    "@grammyjs/i18n": "^1.1.2",
-    "@qdrant/js-client-rest": "^1.15.0",
-    "dotenv": "^17.2.1",
-    "grammy": "^1.37.0",
-    "mongodb": "^6.18.0",
-    "ollama": "^0.5.16",
-    "onnxruntime-node": "^1.22.0-rev",
-    "tokenizers": "^0.13.3",
-    "tokenizers-linux-x64-gnu": "^0.13.4-rc1"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.1.3",
-    "@tsconfig/recommended": "^1.0.10",
-    "@types/node": "^24.2.0",
-    "typescript": "^5.9.2"
-  }
+	"type": "module",
+	"name": "telegram-bot",
+	"version": "1.0.0",
+	"main": "dist/main.js",
+	"scripts": {
+		"build": "tsc",
+		"postbuild": "cp -r locales dist/",
+		"start": "npm run build && node ."
+	},
+	"dependencies": {
+		"@grammyjs/i18n": "^1.1.2",
+		"@qdrant/js-client-rest": "^1.15.0",
+		"dotenv": "^17.2.1",
+		"grammy": "^1.37.0",
+		"mongodb": "^6.18.0",
+		"ollama": "^0.5.16",
+		"onnxruntime-node": "^1.22.0-rev",
+		"tokenizers": "^0.13.3",
+		"tokenizers-linux-x64-gnu": "^0.13.4-rc1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.1.3",
+		"@tsconfig/recommended": "^1.0.10",
+		"@types/node": "^24.2.0",
+		"typescript": "^5.9.2"
+	}
 }

@@ -11,7 +11,6 @@ manually.
 - `send_message(text)` sends a message in the chat
 - `search_messages(query, dateMin?, dateMax?)` performs a semantic search in the
   chat
-- `finish()` signal to stop requesting any further agent actions
 
 ## Deep Dive
 
